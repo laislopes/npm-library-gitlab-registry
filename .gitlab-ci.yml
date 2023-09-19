@@ -1,14 +1,15 @@
 image: node:18.17.1
 
 stages:
-  - deploy
+    - deploy
 
 deploy:
-  stage: deploy
-  script:
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/2/packages/npm/:_authToken=${CI_JOB_TOKEN}"
-    - npm install
-    - npm publish
-    - echo "-- build completed successfully"
-  only:
-    - main
+    stage: deploy
+    script:
+        - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
+        - npm install
+        - npm run prepare
+        - npm publish
+        - echo "-- build completed successfully"
+    only:
+        - main
